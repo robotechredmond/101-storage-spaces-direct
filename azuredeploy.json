@@ -16,7 +16,7 @@
       "metadata": {
         "description": "Number of storage nodes to provision in S2D cluster"
       },
-      "defaultValue": "3"
+      "defaultValue": 3
     },
 
     "storageAccountType": {
