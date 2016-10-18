@@ -11,14 +11,6 @@
       }
     },
 
-    "vmCount": {
-      "type": "int",
-      "metadata": {
-        "description": "Number of storage nodes to provision in S2D cluster"
-      },
-      "defaultValue": 3
-    },
-
     "storageAccountType": {
       "type": "string",
       "allowedValues": [
@@ -139,7 +131,6 @@
         },
         "parameters": {
           "namePrefix": { "value": "[parameters('namePrefix')]" },
-          "vmCount": { "value": "[parameters('vmCount')]"},
           "domainName": { "value": "[parameters('existingDomainName')]" },
           "adminUsername": { "value": "[parameters('adminUsername')]" },
           "adminPassword": { "value": "[parameters('adminPassword')]" },

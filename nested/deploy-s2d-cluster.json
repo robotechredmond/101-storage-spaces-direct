@@ -12,10 +12,6 @@
       "type": "string"
     },
 
-		"dnsServerName": {
-      "type": "string"
-    },
-
     "adminUsername": {
       "type": "string"
     },
@@ -26,10 +22,6 @@
 
     "storageAccountType": {
       "type": "securestring"
-    },
-
-		"dnsServerName": {
-      "type": "string"
     },
 
 		"nicSubnetUri": {
