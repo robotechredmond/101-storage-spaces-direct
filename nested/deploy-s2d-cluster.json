@@ -251,7 +251,7 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
 				"[resourceId('Microsoft.Compute/virtualMachines',concat(variables('vmNamePrefix'),'0'))]",
-				"[resourceId('Microsoft.Compute/virtualMachines/extensions',concat(variables('vmNamePrefix'),string(sub(variables('vmCount'),1)),'s2dPrep')]"
+				"[resourceId('Microsoft.Compute/virtualMachines/extensions',concat(variables('vmNamePrefix'),string(sub(variables('vmCount'),1))),'s2dPrep')]"
       ],
       "properties": {
         "publisher": "Microsoft.Powershell",
