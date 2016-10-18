@@ -97,7 +97,7 @@
 
     {
 			"type": "Microsoft.Storage/storageAccounts",
-			"name": "[concat(uniqueString(subscription().subscriptionId,copyIndex()),parameters('namePrefix'),'sa',copyindex())]",
+			"name": "[concat(uniqueString(subscription().subscriptionId,variables('vmNamePrefix'),copyIndex()),parameters('namePrefix'),'sa',copyindex())]",
 			"apiVersion": "[variables('apiVersionStorage')]",
 			"copy": {
 				"name": "storageAccountLoop",
@@ -143,7 +143,7 @@
 				"count": "[variables('vmCount')]"
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Storage/storageAccounts',concat(uniqueString(subscription().subscriptionId,copyIndex()),parameters('namePrefix'),'sa',copyindex()))]",
+				"[resourceId('Microsoft.Storage/storageAccounts',concat(uniqueString(subscription().subscriptionId,variables('vmNamePrefix'),copyIndex()),parameters('namePrefix'),'sa',copyindex()))]",
 				"[resourceId('Microsoft.Network/networkInterfaces',concat(variables('vmNamePrefix'), copyindex(), '-nic'))]",
 				"[resourceId('Microsoft.Compute/availabilitySets', variables('vmAvailabilitySetName'))]"
 			],
@@ -169,7 +169,7 @@
 					"osDisk": {
 						"name": "[concat(variables('vmNamePrefix'), copyindex(), '-osdisk.vhd')]",
 						"vhd": {
-							"uri": "[concat('http://',variables('storageAccountPrefix'), copyindex(), '.blob.core.windows.net/', variables('vhdContainerName'), '/', variables('vmNamePrefix'), copyindex(), '-osdisk.vhd')]"
+							"uri": "[concat('http://',uniqueString(subscription().subscriptionId,variables('vmNamePrefix'),copyIndex()),parameters('namePrefix'),'sa',copyindex(), '.blob.core.windows.net/', variables('vhdContainerName'), '/', variables('vmNamePrefix'), copyindex(), '-osdisk.vhd')]"
 						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
@@ -177,7 +177,7 @@
 					"dataDisks": [
 						{
 							"vhd": {
-								"uri": "[concat('http://',variables('storageAccountPrefix'), copyindex(), '.blob.core.windows.net/', variables('vhdContainerName'), '/', variables('vmNamePrefix'), copyindex(), '-datadisk1.vhd')]"
+								"uri": "[concat('http://',uniqueString(subscription().subscriptionId,variables('vmNamePrefix'),copyIndex()),parameters('namePrefix'),'sa',copyindex(), '.blob.core.windows.net/', variables('vhdContainerName'), '/', variables('vmNamePrefix'), copyindex(), '-datadisk1.vhd')]"
 							},
 							"name": "[concat(variables('vmNamePrefix'), copyindex(), '-datadisk1.vhd')]",
 							"caching" : "None",
@@ -187,7 +187,7 @@
 						},
 						{
 							"vhd": {
-								"uri": "[concat('http://',variables('storageAccountPrefix'), copyindex(), '.blob.core.windows.net/', variables('vhdContainerName'), '/', variables('vmNamePrefix'), copyindex(), '-datadisk2.vhd')]"
+								"uri": "[concat('http://',uniqueString(subscription().subscriptionId,variables('vmNamePrefix'),copyIndex()),parameters('namePrefix'),'sa',copyindex(), '.blob.core.windows.net/', variables('vhdContainerName'), '/', variables('vmNamePrefix'), copyindex(), '-datadisk2.vhd')]"
 							},
 							"name": "[concat(variables('vmNamePrefix'), copyindex(), '-datadisk2.vhd')]",
 							"caching" : "None",
