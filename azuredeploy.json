@@ -1,0 +1,158 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+
+  "parameters": {
+
+    "namePrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Naming prefix for each new resource created. 8-char max, lowercase alphanumeric"
+      }
+    },
+
+    "vmCount": {
+      "type": "int",
+      "metadata": {
+        "description": "Number of storage nodes to provision in S2D cluster"
+      },
+      "defaultValue": "3"
+    },
+
+    "storageAccountType": {
+      "type": "string",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_RAGRS",
+        "Premium_LRS"
+      ],
+      "metadata": {
+        "description": "Type of new Storage Accounts (Standard_LRS, Standard_GRS, Standard_RAGRS or Premium_LRS) to be created to store VM disks"
+      },
+      "defaultValue": "Premium_LRS"
+    },
+
+    "vmSize": {
+      "type": "string",
+      "allowedValues": [
+        "Standard_D1_v2",
+        "Standard_DS1_v2",
+        "Standard_D2_v2",
+        "Standard_DS2_v2",
+        "Standard_D3_v2",
+        "Standard_DS3_v2",
+        "Standard_D4_v2",
+        "Standard_DS4_v2",
+        "Standard_D11_v2",
+        "Standard_DS11_v2",
+        "Standard_D12_v2",
+        "Standard_DS12_v2",
+        "Standard_D13_v2",
+        "Standard_DS13_v2",
+        "Standard_D14_v2",
+        "Standard_DS14_v2",
+        "Standard_D15_v2",
+        "Standard_DS15_v2"
+      ],
+      "metadata": {
+        "description": "Size of the S2D VMs to be created"
+      },
+      "defaultValue": "Standard_DS1_v2"
+    },
+
+    "existingDomainName": {
+      "type": "string",
+      "metadata": {
+        "description": "DNS domain name for existing Active Directory domain"
+      },
+      "defaultValue": "contoso.com"
+    },
+
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the Administrator of the existing Active Directory Domain"
+      }
+    },
+
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the Administrator account of the existing Active Directory Domain"
+      }
+    },
+
+    "existingVirtualNetworkId": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource ID of the existing VNET. You can find the Resource ID for the VNET on the Properties blade of the VNET."
+      }
+    },
+
+    "existingSubnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the existing subnet in the existing VNET to which the S2D VMs should be deployed"
+      },
+      "defaultValue": "default"
+    },
+
+    "assetLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "Location of resources that the script is dependent on such as linked templates and DSC modules"
+      },
+      "defaultValue": "https://raw.githubusercontent.com/robotechredmond/101-storage-spaces-direct/master"
+    }
+  },
+
+  "variables": {
+
+    "apiVersion": "2015-01-01",
+    "apiVersionNetworks": "2015-06-15",
+    "apiVersionVirtualMachines": "2015-06-15",
+    "apiVersionVMExtensions": "2015-06-15",
+    "apiVersionStorage": "2015-06-15",
+
+    "subnetRef": "[concat(parameters('existingVirtualNetworkId'),'/subnets/',parameters('existingSubnetName'))]",
+    
+    "deployS2DClusterTemplateURL": "[concat(parameters('assetLocation'),'/nested/deploy-s2d-cluster.json')]",
+    "deployS2DCluster": "deployS2DCluster",
+    "deployS2DClusterId": "[concat('Microsoft.Resources/deployments/', variables('deployS2DCluster'))]"
+
+  },
+
+  "resources": [
+
+    {
+      "name": "[variables('deployS2DCluster')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "[variables('apiVersion')]",
+      "dependsOn": [
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployS2DClusterTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "namePrefix": { "value": "[parameters('namePrefix')]" },
+          "vmCount": { "value": "[parameters('vmCount')]"},
+          "domainName": { "value": "[parameters('existingDomainName')]" },
+          "adminUsername": { "value": "[parameters('adminUsername')]" },
+          "adminPassword": { "value": "[parameters('adminPassword')]" },
+          "storageAccountType": { "value": "[parameters('storageAccountType')]" },
+          "nicSubnetUri": { "value": "[variables('subnetRef')]" },
+          "vmSize": { "value": "[parameters('vmSize')]" },
+          "assetLocation": { "value": "[parameters('assetLocation')]" }
+        }
+      }
+    }
+
+  ],
+
+  "outputs": {
+  }
+}
