@@ -3,11 +3,9 @@ This template will create a Storage Spaces Direct (S2D) cluster using Windows Se
 
 This template creates the following resources:
 
-+	Four Premium Storage Accounts for storage nodes
-+   One Standard Storage Account as a cloud witness
-+	One Internal Load Balancer
++	Three Premium Storage Accounts for storage nodes
 +	Three VMs in a Windows Server 2016 cluster as storage nodes, provisioned for Storage Spaces Direct (S2D)
-+	One Availability Set for the cluster nodes, configured with three Update Domains and three Fault Domains
++	One Availability Set for the cluster nodes, configured with five Update Domains and three Fault Domains
 
 To deploy the required Azure VNET and Active Directory infrastructure, if not already in place, you may use the *DeployADOnly.json* template that is also located in this project. 
 
