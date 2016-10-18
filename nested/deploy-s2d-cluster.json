@@ -76,7 +76,6 @@
     "sofsName":"[concat(variables('vmNamePrefix'),'sofs')]",
 		"shareName": "data",
 
-		"storageAccountPrefix": "[concat(uniqueString(subscription().subscriptionId),parameters('namePrefix'),'sa')]",
 		"vhdContainerName": "vhds",
 
 		"s2dPrepModulesURL":"[concat(parameters('assetLocation'),'/scripts/prep-s2d.ps1.zip')]",
@@ -98,7 +97,7 @@
 
     {
 			"type": "Microsoft.Storage/storageAccounts",
-			"name": "[concat(variables('storageAccountPrefix'), copyindex())]",
+			"name": "[concat(uniqueString(subscription().subscriptionId,copyIndex()),parameters('namePrefix'),'sa',copyindex())]",
 			"apiVersion": "[variables('apiVersionStorage')]",
 			"copy": {
 				"name": "storageAccountLoop",
@@ -144,7 +143,7 @@
 				"count": "[variables('vmCount')]"
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Storage/storageAccounts',concat(variables('storageAccountPrefix'),  copyindex()))]",
+				"[resourceId('Microsoft.Storage/storageAccounts',concat(uniqueString(subscription().subscriptionId,copyIndex()),parameters('namePrefix'),'sa',copyindex()))]",
 				"[resourceId('Microsoft.Network/networkInterfaces',concat(variables('vmNamePrefix'), copyindex(), '-nic'))]",
 				"[resourceId('Microsoft.Compute/availabilitySets', variables('vmAvailabilitySetName'))]"
 			],
