@@ -77,10 +77,10 @@
 		"shareName": "data",
 
 		"storageAccountPrefix": "[concat(uniqueString(subscription().subscriptionId),parameters('namePrefix'),'sa')]",
-    "vhdContainerName": "vhds",
+		"vhdContainerName": "vhds",
 
 		"s2dPrepModulesURL":"[concat(parameters('assetLocation'),'/scripts/prep-s2d.ps1.zip')]",
-    "s2dPrepFunction": "PrepS2D.ps1\\PrepS2D",
+		"s2dPrepFunction": "PrepS2D.ps1\\PrepS2D",
 
 		"s2dConfigModulesURL":"[concat(parameters('assetLocation'),'/scripts/config-s2d.ps1.zip')]",
     "s2dConfigFunction": "ConfigS2D.ps1\\ConfigS2D"
@@ -90,17 +90,17 @@
   "resources": [
 
 		{
-      "type": "Microsoft.Compute/availabilitySets",
-      "name": "[variables('vmAvailabilitySetName')]",
-      "apiVersion": "[variables('apiVersionNetworks')]",
-      "location": "[resourceGroup().location]"
+			"type": "Microsoft.Compute/availabilitySets",
+			"name": "[variables('vmAvailabilitySetName')]",
+			"apiVersion": "[variables('apiVersionNetworks')]",
+			"location": "[resourceGroup().location]"
     },
 
     {
 			"type": "Microsoft.Storage/storageAccounts",
 			"name": "[concat(variables('storageAccountPrefix'), copyindex())]",
-      "apiVersion": "[variables('apiVersionStorage')]",
-      "copy": {
+			"apiVersion": "[variables('apiVersionStorage')]",
+			"copy": {
 				"name": "storageAccountLoop",
 				"count": "[variables('vmCount')]"
 			},
