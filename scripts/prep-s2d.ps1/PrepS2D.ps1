@@ -12,13 +12,17 @@ configuration PrepS2D
         [Parameter(Mandatory)]
         [System.Management.Automation.PSCredential]$AdminCreds,
 
+        
+        [String]$DomainNetbiosName=(Get-NetBIOSName -DomainName $DomainName),
+
         [Int]$RetryCount=20,
         [Int]$RetryIntervalSec=30
     )
 
     Import-DscResource -ModuleName xComputerManagement,xActiveDirectory
 
-    [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($AdminCreds.UserName)", $AdminCreds.Password)
+    [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$($Admincreds.UserName)", $Admincreds.Password)
+    [System.Management.Automation.PSCredential]$DomainFQDNCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
 
     Node localhost
     {
@@ -60,7 +64,7 @@ configuration PrepS2D
         {
             Name = $env:COMPUTERNAME
             DomainName = $DomainName
-            Credential = $AdminCreds
+            Credential = $DomainCreds
             DependsOn = "[xWaitForADDomain]DscForestWait"
         }
 
@@ -72,3 +76,26 @@ configuration PrepS2D
     }
 }
 
+function Get-NetBIOSName
+{ 
+    [OutputType([string])]
+    param(
+        [string]$DomainName
+    )
+
+    if ($DomainName.Contains('.')) {
+        $length=$DomainName.IndexOf('.')
+        if ( $length -ge 16) {
+            $length=15
+        }
+        return $DomainName.Substring(0,$length)
+    }
+    else {
+        if ($DomainName.Length -gt 15) {
+            return $DomainName.Substring(0,15)
+        }
+        else {
+            return $DomainName
+        }
+    }
+}

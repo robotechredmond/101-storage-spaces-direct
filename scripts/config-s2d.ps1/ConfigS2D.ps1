@@ -27,6 +27,8 @@ configuration ConfigS2D
         [Parameter(Mandatory)]
         [SInt]$vmDiskSize,
 
+        [String]$DomainNetbiosName=(Get-NetBIOSName -DomainName $DomainName),
+
         [Int]$RetryCount=20,
         [Int]$RetryIntervalSec=30
 
@@ -34,8 +36,9 @@ configuration ConfigS2D
 
     Import-DscResource -ModuleName xComputerManagement, xFailOverCluster, xActiveDirectory
  
-    [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
-  
+    [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$($Admincreds.UserName)", $Admincreds.Password)
+    [System.Management.Automation.PSCredential]$DomainFQDNCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
+
     [System.Collections.ArrayList]$Nodes=@()
 
     For ($count=0; $count -lt $vmCount; $count++) {
@@ -91,7 +94,7 @@ configuration ConfigS2D
         {
             Name = $env:COMPUTERNAME
             DomainName = $DomainName
-            Credential = $AdminCreds
+            Credential = $DomainCreds
 	        DependsOn = "[xWaitForADDomain]DscForestWait"
         }
 
