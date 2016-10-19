@@ -34,7 +34,7 @@ configuration ConfigS2D
 
     )
 
-    Import-DscResource -ModuleName xComputerManagement, xFailOverCluster, xActiveDirectory
+    Import-DscResource -ModuleName xComputerManagement, xFailOverCluster, xActiveDirectory, xSOFS
  
     [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$($Admincreds.UserName)", $Admincreds.Password)
     [System.Management.Automation.PSCredential]$DomainFQDNCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
@@ -120,11 +120,11 @@ configuration ConfigS2D
 
         }
 
-        Script EnableSOFS
+        xSOFS EnableSOFS
         {
-            SetScript = "Add-ClusterScaleOutFileServerRole -Name ${SOFSName}"
-            TestScript = "(Get-ClusterGroup -Name ${SOFSName} -ErrorAction SilentlyContinue).State -eq 'Online'"
-            GetScript = "@{Ensure = if ((Get-ClusterGroup -Name ${SOFSName} -ErrorAction SilentlyContinue).State -eq 'Online') {'Present'} Else {'Absent'}}"
+            SOFSName = $SOFSName
+            DomainAdministratorCredential = $DomainCreds
+            Ensure = "Present"
             DependsOn = "[Script]EnableS2D"
         }
 
@@ -133,7 +133,7 @@ configuration ConfigS2D
             SetScript = "New-Item -Path C:\ClusterStorage\Volume1\${ShareName} -ItemType Directory; New-SmbShare -Name ${ShareName} -Path C:\ClusterStorage\Volume1\${ShareName} -FullAccess ${DomainName}\$($AdminCreds.Username)"
             TestScript = "(Get-SmbShare -Name ${ShareName} -ErrorAction SilentlyContinue).ShareState -eq 'Online'"
             GetScript = "@{Ensure = if ((Get-SmbShare -Name ${ShareName} -ErrorAction SilentlyContinue).ShareState -eq 'Online') {'Present'} Else {'Absent'}}"
-            DependsOn = "[Script]EnableSOFS"
+            DependsOn = "[xSOFS]EnableSOFS"
         }
 
         LocalConfigurationManager 
