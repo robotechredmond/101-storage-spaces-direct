@@ -40,12 +40,9 @@ configuration ConfigS2D
     [System.Management.Automation.PSCredential]$DomainFQDNCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
 
     [System.Collections.ArrayList]$Nodes=@()
-
     For ($count=0; $count -lt $vmCount; $count++) {
         $Nodes.Add($vmNamePrefix + $Count.ToString())
     }
-
-    $volSize=$vmDiskSize*$vmCount*2
 
     Node localhost
     {
@@ -116,9 +113,9 @@ configuration ConfigS2D
 
         Script EnableS2D
         {
-            SetScript = "Enable-ClusterS2D; New-Volume -StoragePoolFriendlyName S2D* -FriendlyName VDisk01 -FileSystem CSVFS_REFS -Size ${volSize}GB"
-            TestScript = "(Get-ClusterSharedVolume)"
-            GetScript = "@{Ensure = if (Get-ClusterSharedVolume) {'Present'} Else {'Absent'}}"
+            SetScript = "Enable-ClusterS2D -Confirm:0; New-Volume -StoragePoolFriendlyName S2D* -FriendlyName VDisk01 -FileSystem CSVFS_REFS -UseMaximumSize"
+            TestScript = "(Get-ClusterSharedVolume).State -eq 'Online'"
+            GetScript = "@{Ensure = if ((Get-ClusterSharedVolume).State -eq 'Online') {'Present'} Else {'Absent'}}"
             DependsOn = "[Script]IncreaseClusterTimeouts"
 
         }
@@ -126,16 +123,16 @@ configuration ConfigS2D
         Script EnableSOFS
         {
             SetScript = "Add-ClusterScaleOutFileServerRole -Name ${SOFSName}"
-            TestScript = "(Get-ClusterGroup -Name ${SOFSName})"
-            GetScript = "@{Ensure = if (Get-ClusterGroup -Name ${SOFSName}) {'Present'} Else {'Absent'}}"
+            TestScript = "(Get-ClusterGroup -Name ${SOFSName}).State -eq 'Online'"
+            GetScript = "@{Ensure = if ((Get-ClusterSharedVolume).State -eq 'Online') {'Present'} Else {'Absent'}}"
             DependsOn = "[Script]EnableS2D"
         }
 
         Script CreateShare
         {
             SetScript = "New-Item -Path C:\ClusterStorage\Volume1\${ShareName} -ItemType Directory; New-SmbShare -Name ${ShareName} -Path C:\ClusterStorage\Volume1\${ShareName} -FullAccess ${DomainName}\$($AdminCreds.Username)"
-            TestScript = "(Get-SmbShare -Name ${ShareName})"
-            GetScript = "@{Ensure = if (Get-SmbShare -Name ${ShareName}) {'Present'} Else {'Absent'}}"
+            TestScript = "(Get-SmbShare -Name ${ShareName}).ShareState -eq 'Online'"
+            GetScript = "@{Ensure = if ((Get-SmbShare -Name ${ShareName}).ShareState -eq 'Online') {'Present'} Else {'Absent'}}"
             DependsOn = "[Script]EnableSOFS"
         }
 
