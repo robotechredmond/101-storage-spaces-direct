@@ -100,7 +100,7 @@ function Set-TargetResource
         {
             Write-Verbose -Message "Cluster '$($Name)' is NOT present."
             
-            $cluster = New-Cluster -Name $Name -Node $env:COMPUTERNAME -NoStorage -Force
+            $cluster = New-Cluster -Name $Name -Node $env:COMPUTERNAME -NoStorage -Force -ErrorAction SilentlyContinue
             
             Write-Verbose -Message "Successfully created cluster '$($Name)'."
 
@@ -125,7 +125,7 @@ function Set-TargetResource
                 "SubnetMask" = "255.255.0.0"
                 "EnableDhcp" = 0
                 "OverrideAddressMatch" = 1
-            } -ErrorAction Stop
+            } -ErrorAction SilentlyContinue
 
             Write-Verbose -Message "Starting the Cluster Name resource ..."
             $clusterNameRes | Start-ClusterResource -ErrorAction Stop | Out-Null
@@ -147,7 +147,7 @@ function Set-TargetResource
             if ($foundNode -and ($foundNode.State -ne "Up"))
             {
                 Write-Verbose -Message "Removing node '$($node)' since it's in the cluster but is not UP ..."
-                Remove-ClusterNode $foundNode -Cluster $cluster -Force | Out-Null
+                Remove-ClusterNode $foundNode -Cluster $cluster -Force -ErrorAction SilentlyContinue | Out-Null
             }
             elseif ($foundNode)
             {
@@ -157,14 +157,14 @@ function Set-TargetResource
 
             if ( $nostorage)
             {
-                $cluster | Add-ClusterNode $node -NoStorage | Out-Null
+                $cluster | Add-ClusterNode $node -NoStorage -ErrorAction SilentlyContinue | Out-Null
                 Write-Verbose -Message "Adding node $($node)' to the cluster without storage ..."
            
             }
             else
             {
                 Write-Verbose -Message "Adding node $($node)' to the cluster"
-                $cluster | Add-ClusterNode $node | Out-Null
+                $cluster | Add-ClusterNode $node -ErrorAction SilentlyContinue | Out-Null
             }
             Write-Verbose -Message "Successfully added node $($node)' to cluster '$($Name)'."
         }
