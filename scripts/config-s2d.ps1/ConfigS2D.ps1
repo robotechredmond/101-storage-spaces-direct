@@ -117,14 +117,12 @@ configuration ConfigS2D
             TestScript = "(Get-ClusterSharedVolume).State -eq 'Online'"
             GetScript = "@{Ensure = if ((Get-ClusterSharedVolume).State -eq 'Online') {'Present'} Else {'Absent'}}"
             DependsOn = "[Script]IncreaseClusterTimeouts"
-
         }
 
         xSOFS EnableSOFS
         {
             SOFSName = $SOFSName
             DomainAdministratorCredential = $DomainCreds
-            Ensure = "Present"
             DependsOn = "[Script]EnableS2D"
         }
 
