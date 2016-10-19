@@ -25,7 +25,7 @@ configuration ConfigS2D
         [Int]$vmCount,
 
         [Parameter(Mandatory)]
-        [SInt]$vmDiskSize,
+        [Int]$vmDiskSize,
 
         [String]$DomainNetbiosName=(Get-NetBIOSName -DomainName $DomainName),
 
