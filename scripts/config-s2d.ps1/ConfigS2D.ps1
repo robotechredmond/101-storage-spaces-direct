@@ -123,16 +123,16 @@ configuration ConfigS2D
         Script EnableSOFS
         {
             SetScript = "Add-ClusterScaleOutFileServerRole -Name ${SOFSName}"
-            TestScript = "(Get-ClusterGroup -Name ${SOFSName}).State -eq 'Online'"
-            GetScript = "@{Ensure = if ((Get-ClusterSharedVolume).State -eq 'Online') {'Present'} Else {'Absent'}}"
+            TestScript = "(Get-ClusterGroup -Name ${SOFSName} -ErrorAction SilentlyContinue).State -eq 'Online'"
+            GetScript = "@{Ensure = if ((Get-ClusterGroup -Name ${SOFSName} -ErrorAction SilentlyContinue).State -eq 'Online') {'Present'} Else {'Absent'}}"
             DependsOn = "[Script]EnableS2D"
         }
 
         Script CreateShare
         {
             SetScript = "New-Item -Path C:\ClusterStorage\Volume1\${ShareName} -ItemType Directory; New-SmbShare -Name ${ShareName} -Path C:\ClusterStorage\Volume1\${ShareName} -FullAccess ${DomainName}\$($AdminCreds.Username)"
-            TestScript = "(Get-SmbShare -Name ${ShareName}).ShareState -eq 'Online'"
-            GetScript = "@{Ensure = if ((Get-SmbShare -Name ${ShareName}).ShareState -eq 'Online') {'Present'} Else {'Absent'}}"
+            TestScript = "(Get-SmbShare -Name ${ShareName} -ErrorAction SilentlyContinue).ShareState -eq 'Online'"
+            GetScript = "@{Ensure = if ((Get-SmbShare -Name ${ShareName} -ErrorAction SilentlyContinue).ShareState -eq 'Online') {'Present'} Else {'Absent'}}"
             DependsOn = "[Script]EnableSOFS"
         }
 
