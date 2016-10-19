@@ -100,7 +100,7 @@ function Set-TargetResource
         {
             Write-Verbose -Message "Cluster '$($Name)' is NOT present."
             
-            $cluster = New-Cluster -Name $Name -Node $env:COMPUTERNAME -NoStorage -Force -ErrorAction Stop
+            $cluster = New-Cluster -Name $Name -Node $env:COMPUTERNAME -NoStorage -Force
             
             Write-Verbose -Message "Successfully created cluster '$($Name)'."
 
@@ -134,15 +134,10 @@ function Set-TargetResource
             Start-Cluster -Name $Name -ErrorAction Stop | Out-Null
             (Get-Cluster).SameSubnetThreshold = 20
         }
+
         $version=[system.environment]::OSVersion.Version
-        if (($version.Major -eq 6) -and ($version.Minor -eq 3))
-        {
-            $nostorage=$true
-        }
-        else
-        {
-            $nostorage=$false
-        } 
+        $nostorage=$true
+
         Write-Verbose -Message "Adding specified nodes to cluster '$($Name)' ..."
         $allNodes = Get-ClusterNode -Cluster $Name
         foreach ($node in $Nodes)
@@ -162,14 +157,14 @@ function Set-TargetResource
 
             if ( $nostorage)
             {
-                $cluster | Add-ClusterNode $node -NoStorage -ErrorAction Stop | Out-Null
+                $cluster | Add-ClusterNode $node -NoStorage | Out-Null
                 Write-Verbose -Message "Adding node $($node)' to the cluster without storage ..."
            
             }
             else
             {
                 Write-Verbose -Message "Adding node $($node)' to the cluster"
-                $cluster | Add-ClusterNode $node -ErrorAction Stop | Out-Null
+                $cluster | Add-ClusterNode $node | Out-Null
             }
             Write-Verbose -Message "Successfully added node $($node)' to cluster '$($Name)'."
         }
