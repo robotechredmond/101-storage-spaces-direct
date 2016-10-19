@@ -81,7 +81,7 @@
       "defaultValue": "10.0.0.0/16"
     },
 
-    "vmNetworkSubnet": {
+    "adSubnet": {
       "type": "string",
       "metadata": {
         "description": "Address range for AD Subnet"
@@ -89,10 +89,10 @@
       "defaultValue": "10.0.0.0/24"
     },
 
-    "sqlSubnet": {
+    "dataSubnet": {
       "type": "string",
       "metadata": {
-        "description": "Address range for SQL Subnet"
+        "description": "Address range for Data Subnet"
       },
       "defaultValue": "10.0.1.0/24"
     },
@@ -134,22 +134,22 @@
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
 
     "adSubnetName": "adSubnet",
-    "sqlSubnetName": "sqlSubnet",
+    "dataSubnetName": "dataSubnet",
 
     "adSubnetRef": "[concat(variables('vnetID'),'/subnets/',variables('adSubnetName'))]",
-    "sqlSubnetRef": "[concat(variables('vnetID'),'/subnets/',variables('sqlSubnetName'))]",
+    "dataSubnetRef": "[concat(variables('vnetID'),'/subnets/',variables('dataSubnetName'))]",
 
     "subnets": [
       {
         "name": "[variables('adSubnetName')]",
         "properties": {
-          "addressPrefix": "[parameters('vmNetworkSubnet')]"
+          "addressPrefix": "[parameters('adSubnet')]"
         }
       },
       {
-        "name": "[variables('sqlSubnetName')]",
+        "name": "[variables('dataSubnetName')]",
         "properties": {
-          "addressPrefix": "[parameters('sqlSubnet')]"
+          "addressPrefix": "[parameters('dataSubnet')]"
         }
       }
     ], 
