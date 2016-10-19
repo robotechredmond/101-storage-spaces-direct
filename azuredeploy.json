@@ -1,16 +1,13 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-
   "parameters": {
-
     "namePrefix": {
       "type": "string",
       "metadata": {
         "description": "Naming prefix for each new resource created. 8-char max, lowercase alphanumeric"
       }
     },
-
     "storageAccountType": {
       "type": "string",
       "allowedValues": [
@@ -24,7 +21,6 @@
       },
       "defaultValue": "Premium_LRS"
     },
-
     "vmSize": {
       "type": "string",
       "allowedValues": [
@@ -52,7 +48,6 @@
       },
       "defaultValue": "Standard_DS1_v2"
     },
-
     "existingDomainName": {
       "type": "string",
       "metadata": {
@@ -60,28 +55,24 @@
       },
       "defaultValue": "contoso.com"
     },
-
     "adminUsername": {
       "type": "string",
       "metadata": {
         "description": "Name of the Administrator of the existing Active Directory Domain"
       }
     },
-
     "adminPassword": {
       "type": "securestring",
       "metadata": {
         "description": "Password for the Administrator account of the existing Active Directory Domain"
       }
     },
-
     "existingVirtualNetworkId": {
       "type": "string",
       "metadata": {
         "description": "Resource ID of the existing VNET. You can find the Resource ID for the VNET on the Properties blade of the VNET."
       }
     },
-
     "existingSubnetName": {
       "type": "string",
       "metadata": {
@@ -89,7 +80,6 @@
       },
       "defaultValue": "default"
     },
-
     "assetLocation": {
       "type": "string",
       "metadata": {
@@ -98,31 +88,23 @@
       "defaultValue": "https://raw.githubusercontent.com/robotechredmond/101-storage-spaces-direct/master"
     }
   },
-
   "variables": {
-
     "apiVersion": "2015-01-01",
     "apiVersionNetworks": "2015-06-15",
     "apiVersionVirtualMachines": "2015-06-15",
     "apiVersionVMExtensions": "2015-06-15",
     "apiVersionStorage": "2015-06-15",
-
     "subnetRef": "[concat(parameters('existingVirtualNetworkId'),'/subnets/',parameters('existingSubnetName'))]",
-    
     "deployS2DClusterTemplateURL": "[concat(parameters('assetLocation'),'/nested/deploy-s2d-cluster.json')]",
     "deployS2DCluster": "deployS2DCluster",
     "deployS2DClusterId": "[concat('Microsoft.Resources/deployments/', variables('deployS2DCluster'))]"
-
   },
-
   "resources": [
-
     {
       "name": "[variables('deployS2DCluster')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "[variables('apiVersion')]",
-      "dependsOn": [
-      ],
+      "dependsOn": [],
       "properties": {
         "mode": "Incremental",
         "templateLink": {
@@ -130,20 +112,33 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "namePrefix": { "value": "[parameters('namePrefix')]" },
-          "domainName": { "value": "[parameters('existingDomainName')]" },
-          "adminUsername": { "value": "[parameters('adminUsername')]" },
-          "adminPassword": { "value": "[parameters('adminPassword')]" },
-          "storageAccountType": { "value": "[parameters('storageAccountType')]" },
-          "nicSubnetUri": { "value": "[variables('subnetRef')]" },
-          "vmSize": { "value": "[parameters('vmSize')]" },
-          "assetLocation": { "value": "[parameters('assetLocation')]" }
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "domainName": {
+            "value": "[parameters('existingDomainName')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "storageAccountType": {
+            "value": "[parameters('storageAccountType')]"
+          },
+          "nicSubnetUri": {
+            "value": "[variables('subnetRef')]"
+          },
+          "vmSize": {
+            "value": "[parameters('vmSize')]"
+          },
+          "assetLocation": {
+            "value": "[parameters('assetLocation')]"
+          }
         }
       }
     }
-
   ],
-
-  "outputs": {
-  }
+  "outputs": {}
 }

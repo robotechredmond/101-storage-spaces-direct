@@ -1,16 +1,13 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-
   "parameters": {
-
     "namePrefix": {
       "type": "string",
       "metadata": {
         "description": "Naming prefix for each new resource created. 8-char max, lowercase alphanumeric"
       }
     },
-
     "storageAccountType": {
       "type": "string",
       "allowedValues": [
@@ -24,7 +21,6 @@
       },
       "defaultValue": "Premium_LRS"
     },
-
     "adVMSize": {
       "type": "string",
       "allowedValues": [
@@ -50,7 +46,6 @@
       },
       "defaultValue": "Standard_DS1"
     },
-
     "domainName": {
       "type": "string",
       "metadata": {
@@ -58,21 +53,18 @@
       },
       "defaultValue": "contoso.com"
     },
-
     "adminUsername": {
       "type": "string",
       "metadata": {
         "description": "Name of the Administrator of the new VMs and Domain"
       }
     },
-
     "adminPassword": {
       "type": "securestring",
       "metadata": {
         "description": "Password for the Administrator account of the new VMs and Domain"
       }
     },
-
     "virtualNetworkAddressRange": {
       "type": "string",
       "metadata": {
@@ -80,7 +72,6 @@
       },
       "defaultValue": "10.0.0.0/16"
     },
-
     "adSubnet": {
       "type": "string",
       "metadata": {
@@ -88,7 +79,6 @@
       },
       "defaultValue": "10.0.0.0/24"
     },
-
     "dataSubnet": {
       "type": "string",
       "metadata": {
@@ -96,7 +86,6 @@
       },
       "defaultValue": "10.0.1.0/24"
     },
-
     "primaryAdIpAddress": {
       "type": "string",
       "metadata": {
@@ -104,7 +93,6 @@
       },
       "defaultValue": "10.0.0.4"
     },
-
     "secondaryAdIpAddress": {
       "type": "string",
       "metadata": {
@@ -112,7 +100,6 @@
       },
       "defaultValue": "10.0.0.5"
     },
-
     "assetLocation": {
       "type": "string",
       "metadata": {
@@ -121,24 +108,18 @@
       "defaultValue": "https://raw.githubusercontent.com/robotechredmond/101-storage-spaces-direct/master"
     }
   },
-
   "variables": {
-
     "apiVersion": "2015-01-01",
     "apiVersionNetworks": "2015-06-15",
     "apiVersionVirtualMachines": "2015-06-15",
     "apiVersionVMExtensions": "2015-06-15",
     "apiVersionStorage": "2015-06-15",
-
     "virtualNetworkName": "[concat(parameters('namePrefix'),'-vnet')]",
     "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
-
     "adSubnetName": "adSubnet",
     "dataSubnetName": "dataSubnet",
-
     "adSubnetRef": "[concat(variables('vnetID'),'/subnets/',variables('adSubnetName'))]",
     "dataSubnetRef": "[concat(variables('vnetID'),'/subnets/',variables('dataSubnetName'))]",
-
     "subnets": [
       {
         "name": "[variables('adSubnetName')]",
@@ -152,27 +133,20 @@
           "addressPrefix": "[parameters('dataSubnet')]"
         }
       }
-    ], 
-
+    ],
     "deployPrimaryAdTemplateURL": "[concat(parameters('assetLocation'),'/nested/deploy-primary-ad.json')]",
     "deployPrimaryAd": "deployPrimaryAd",
     "deployPrimaryAdId": "[concat('Microsoft.Resources/deployments/', variables('deployPrimaryAd'))]",
-
     "deploySecondaryAdTemplateURL": "[concat(parameters('assetLocation'),'/nested/deploy-secondary-ad.json')]",
     "deploySecondaryAd": "deploySecondaryAd",
     "deploySecondaryAdId": "[concat('Microsoft.Resources/deployments/', variables('deploySecondaryAd'))]",
-    
     "vnetWithDNSTemplateUri": "[concat(parameters('assetLocation'),'/nested/vnet-with-dns-server.json')]",
     "updateVNetDNS1": "updateVNetDNS1",
     "updateVNetDNS1Id": "[concat('Microsoft.Resources/deployments/', variables('updateVNetDNS1'))]",
-
     "updateVNetDNS2": "updateVNetDNS2",
     "updateVNetDNS2Id": "[concat('Microsoft.Resources/deployments/', variables('updateVNetDNS2'))]"
-
   },
-
   "resources": [
-
     {
       "name": "[variables('virtualNetworkName')]",
       "type": "Microsoft.Network/virtualNetworks",
@@ -187,7 +161,6 @@
         "subnets": "[variables('subnets')]"
       }
     },
-
     {
       "name": "[variables('deployPrimaryAd')]",
       "type": "Microsoft.Resources/deployments",
@@ -202,19 +175,36 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "namePrefix": { "value": "[parameters('namePrefix')]" },
-          "domainName": { "value": "[parameters('domainName')]" },
-          "subnetUri": { "value": "[variables('adSubnetRef')]" },
-          "adIpAddress": { "value": "[parameters('primaryAdIpAddress')]" },
-          "storageAccountType": { "value": "[parameters('storageAccountType')]" },
-          "vmSize": { "value": "[parameters('adVMSize')]" },
-          "adminUsername": { "value": "[parameters('adminUsername')]" },
-          "adminPassword": { "value": "[parameters('adminPassword')]" },
-          "assetLocation": { "value": "[parameters('assetLocation')]" }
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "subnetUri": {
+            "value": "[variables('adSubnetRef')]"
+          },
+          "adIpAddress": {
+            "value": "[parameters('primaryAdIpAddress')]"
+          },
+          "storageAccountType": {
+            "value": "[parameters('storageAccountType')]"
+          },
+          "vmSize": {
+            "value": "[parameters('adVMSize')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "assetLocation": {
+            "value": "[parameters('assetLocation')]"
+          }
         }
       }
     },
-    
     {
       "name": "[variables('updateVNetDNS1')]",
       "type": "Microsoft.Resources/deployments",
@@ -229,14 +219,23 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "virtualNetworkName": { "value": "[variables('virtualNetworkName')]" },
-          "virtualNetworkAddressRange": { "value": "[parameters('virtualNetworkAddressRange')]" },
-          "subnets": { "value": "[variables('subnets')]" },
-          "dnsServerAddress": { "value": [ "[parameters('primaryAdIpAddress')]" ] }
+          "virtualNetworkName": {
+            "value": "[variables('virtualNetworkName')]"
+          },
+          "virtualNetworkAddressRange": {
+            "value": "[parameters('virtualNetworkAddressRange')]"
+          },
+          "subnets": {
+            "value": "[variables('subnets')]"
+          },
+          "dnsServerAddress": {
+            "value": [
+              "[parameters('primaryAdIpAddress')]"
+            ]
+          }
         }
       }
     },
-    
     {
       "name": "[variables('deploySecondaryAd')]",
       "type": "Microsoft.Resources/deployments",
@@ -251,19 +250,36 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "namePrefix": { "value": "[parameters('namePrefix')]" },
-          "domainName": { "value": "[parameters('domainName')]" },
-          "subnetUri": { "value": "[variables('adSubnetRef')]" },
-          "adIpAddress": { "value": "[parameters('secondaryAdIpAddress')]" },
-          "storageAccountType": { "value": "[parameters('storageAccountType')]" },
-          "vmSize": { "value": "[parameters('adVMSize')]" },
-          "adminUsername": { "value": "[parameters('adminUsername')]" },
-          "adminPassword": { "value": "[parameters('adminPassword')]" },
-          "assetLocation": { "value": "[parameters('assetLocation')]" }
+          "namePrefix": {
+            "value": "[parameters('namePrefix')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "subnetUri": {
+            "value": "[variables('adSubnetRef')]"
+          },
+          "adIpAddress": {
+            "value": "[parameters('secondaryAdIpAddress')]"
+          },
+          "storageAccountType": {
+            "value": "[parameters('storageAccountType')]"
+          },
+          "vmSize": {
+            "value": "[parameters('adVMSize')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "assetLocation": {
+            "value": "[parameters('assetLocation')]"
+          }
         }
       }
     },
-    
     {
       "name": "[variables('updateVNetDNS2')]",
       "type": "Microsoft.Resources/deployments",
@@ -278,16 +294,24 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "virtualNetworkName": { "value": "[variables('virtualNetworkName')]" },
-          "virtualNetworkAddressRange": { "value": "[parameters('virtualNetworkAddressRange')]" },
-          "subnets": { "value": "[variables('subnets')]" },
-          "dnsServerAddress": { "value": [ "[parameters('primaryAdIpAddress')]", "[parameters('secondaryAdIpAddress')]" ] }
+          "virtualNetworkName": {
+            "value": "[variables('virtualNetworkName')]"
+          },
+          "virtualNetworkAddressRange": {
+            "value": "[parameters('virtualNetworkAddressRange')]"
+          },
+          "subnets": {
+            "value": "[variables('subnets')]"
+          },
+          "dnsServerAddress": {
+            "value": [
+              "[parameters('primaryAdIpAddress')]",
+              "[parameters('secondaryAdIpAddress')]"
+            ]
+          }
         }
       }
     }
-    
   ],
-
-  "outputs": {
-  }
+  "outputs": {}
 }

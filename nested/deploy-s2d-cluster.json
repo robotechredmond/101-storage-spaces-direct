@@ -1,102 +1,76 @@
 ﻿{
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-
-  "parameters": {
-
-    "namePrefix": {
-      "type": "string"
-    },
-
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"namePrefix": {
+			"type": "string"
+		},
 		"domainName": {
-      "type": "string"
-    },
-
-    "adminUsername": {
-      "type": "string"
-    },
-
-    "adminPassword": {
-      "type": "securestring"
-    },
-
-    "storageAccountType": {
-      "type": "securestring"
-    },
-
+			"type": "string"
+		},
+		"adminUsername": {
+			"type": "string"
+		},
+		"adminPassword": {
+			"type": "securestring"
+		},
+		"storageAccountType": {
+			"type": "securestring"
+		},
 		"nicSubnetUri": {
-      "type": "string"
-    },
-
-    "vmSize": {
-      "type": "string"
-    },
-
+			"type": "string"
+		},
+		"vmSize": {
+			"type": "string"
+		},
 		"assetLocation": {
-      "type": "string"
-    },
-
-    "imagePublisher": {
-      "type": "string",
-      "defaultValue": "MicrosoftWindowsServer"
-    },
-
-    "imageOffer": {
-      "type": "string",
-      "defaultValue": "WindowsServer"
-    },
-
-    "imageSKU": {
-      "type": "string",
-      "defaultValue": "2016-Datacenter"
-    },
-
-    "imageVersion": {
-      "type": "string",
-      "defaultValue": "latest"
-    }
-
-  },
-
-  "variables": {
-
-    "apiVersion": "2015-01-01",
-    "apiVersionNetworks": "2015-06-15",
-    "apiVersionVirtualMachines": "2015-06-15",
-    "apiVersionVMExtensions": "2015-06-15",
-    "apiVersionStorage": "2015-06-15",
-
+			"type": "string"
+		},
+		"imagePublisher": {
+			"type": "string",
+			"defaultValue": "MicrosoftWindowsServer"
+		},
+		"imageOffer": {
+			"type": "string",
+			"defaultValue": "WindowsServer"
+		},
+		"imageSKU": {
+			"type": "string",
+			"defaultValue": "2016-Datacenter"
+		},
+		"imageVersion": {
+			"type": "string",
+			"defaultValue": "latest"
+		}
+	},
+	"variables": {
+		"apiVersion": "2015-01-01",
+		"apiVersionNetworks": "2015-06-15",
+		"apiVersionVirtualMachines": "2015-06-15",
+		"apiVersionVMExtensions": "2015-06-15",
+		"apiVersionStorage": "2015-06-15",
 		"storageNamePrefix": "[concat(parameters('namePrefix'),'stor')]",
 		"vmDiskSize": 1000,
-	
-    "vmNamePrefix": "[concat(parameters('namePrefix'),'-s2d-')]",
+		"vmNamePrefix": "[concat(parameters('namePrefix'),'-s2d-')]",
 		"vmAvailabilitySetName": "[concat(variables('vmNamePrefix'),'as')]",
 		"vmCount": 3,
-
 		"clusterName": "[concat(variables('vmNamePrefix'),'c')]",
-    "sofsName":"[concat(variables('vmNamePrefix'),'sofs')]",
+		"sofsName": "[concat(variables('vmNamePrefix'),'sofs')]",
 		"shareName": "data",
-
 		"vhdContainerName": "vhds",
-
-		"s2dPrepModulesURL":"[concat(parameters('assetLocation'),'/scripts/prep-s2d.ps1.zip')]",
+		"s2dPrepModulesURL": "[concat(parameters('assetLocation'),'/scripts/prep-s2d.ps1.zip')]",
 		"s2dPrepFunction": "PrepS2D.ps1\\PrepS2D",
-
-		"s2dConfigModulesURL":"[concat(parameters('assetLocation'),'/scripts/config-s2d.ps1.zip')]",
-    "s2dConfigFunction": "ConfigS2D.ps1\\ConfigS2D"
-
-  },
-
-  "resources": [
-
+		"s2dConfigModulesURL": "[concat(parameters('assetLocation'),'/scripts/config-s2d.ps1.zip')]",
+		"s2dConfigFunction": "ConfigS2D.ps1\\ConfigS2D"
+	},
+	"resources": [
 		{
 			"type": "Microsoft.Compute/availabilitySets",
 			"name": "[variables('vmAvailabilitySetName')]",
 			"apiVersion": "[variables('apiVersionNetworks')]",
 			"location": "[resourceGroup().location]"
-    },
-
-    {
+		},
+		{
 			"type": "Microsoft.Storage/storageAccounts",
 			"name": "[concat(variables('storageNamePrefix'),copyindex())]",
 			"apiVersion": "[variables('apiVersionStorage')]",
@@ -109,8 +83,7 @@
 				"accountType": "[parameters('storageAccountType')]"
 			}
 		},
-
-    {
+		{
 			"name": "[concat(variables('vmNamePrefix'), copyindex(), '-nic')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"location": "[resourceGroup().location]",
@@ -133,8 +106,7 @@
 				]
 			}
 		},
-
-    {
+		{
 			"apiVersion": "[variables('apiVersionVirtualMachines')]",
 			"type": "Microsoft.Compute/virtualMachines",
 			"name": "[concat(variables('vmNamePrefix'), copyindex())]",
@@ -181,7 +153,7 @@
 								"uri": "[concat('http://',variables('storageNamePrefix'),copyindex(),'.blob.core.windows.net/',variables('vhdContainerName'),'/',variables('vmNamePrefix'),copyindex(),'-datadisk1.vhd')]"
 							},
 							"name": "[concat(variables('vmNamePrefix'), copyindex(), '-datadisk1.vhd')]",
-							"caching" : "None",
+							"caching": "None",
 							"createOption": "Empty",
 							"diskSizeGB": "[variables('vmDiskSize')]",
 							"lun": 0
@@ -191,7 +163,7 @@
 								"uri": "[concat('http://',variables('storageNamePrefix'),copyindex(),'.blob.core.windows.net/',variables('vhdContainerName'),'/',variables('vmNamePrefix'),copyindex(),'-datadisk2.vhd')]"
 							},
 							"name": "[concat(variables('vmNamePrefix'), copyindex(), '-datadisk2.vhd')]",
-							"caching" : "None",
+							"caching": "None",
 							"createOption": "Empty",
 							"diskSizeGB": "[variables('vmDiskSize')]",
 							"lun": 1
@@ -206,86 +178,80 @@
 					]
 				}
 			}
-		},	
-
+		},
 		{
-     	"type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmNamePrefix'),string(add(copyindex(),1)),'/s2dPrep')]",
-      "apiVersion": "[variables('apiVersionVMExtensions')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
+			"type": "Microsoft.Compute/virtualMachines/extensions",
+			"name": "[concat(variables('vmNamePrefix'),string(add(copyindex(),1)),'/s2dPrep')]",
+			"apiVersion": "[variables('apiVersionVMExtensions')]",
+			"location": "[resourceGroup().location]",
+			"dependsOn": [
 				"[resourceId('Microsoft.Compute/virtualMachines',concat(variables('vmNamePrefix'),string(add(copyindex(),1))))]"
-      ],
+			],
 			"copy": {
 				"name": "virtualMachineExtensionLoop",
 				"count": "[sub(variables('vmCount'),1)]"
 			},
-      "properties": {
-        "publisher": "Microsoft.Powershell",
-        "type": "DSC",
-        "typeHandlerVersion": "2.20",
-		    "autoUpgradeMinorVersion": false,
-        "settings": {
-		  		"modulesUrl": "[variables('s2dPrepModulesURL')]",
-          "configurationFunction": "[variables('s2dPrepFunction')]",
-          "properties": {
-            "domainName": "[parameters('domainName')]",
-            "adminCreds": {
-              "userName": "[parameters('adminUserName')]",
-              "password": "PrivateSettingsRef:adminPassword"
-            }
-          }
-        },
-        "protectedSettings": {
-          "items": {
-            "adminPassword": "[parameters('adminPassword')]"
-          }
-        }
-      }
-    },
-
+			"properties": {
+				"publisher": "Microsoft.Powershell",
+				"type": "DSC",
+				"typeHandlerVersion": "2.20",
+				"autoUpgradeMinorVersion": false,
+				"settings": {
+					"modulesUrl": "[variables('s2dPrepModulesURL')]",
+					"configurationFunction": "[variables('s2dPrepFunction')]",
+					"properties": {
+						"domainName": "[parameters('domainName')]",
+						"adminCreds": {
+							"userName": "[parameters('adminUserName')]",
+							"password": "PrivateSettingsRef:adminPassword"
+						}
+					}
+				},
+				"protectedSettings": {
+					"items": {
+						"adminPassword": "[parameters('adminPassword')]"
+					}
+				}
+			}
+		},
 		{
-     	"type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmNamePrefix'),'0/s2dConfig')]",
-      "apiVersion": "[variables('apiVersionVMExtensions')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
+			"type": "Microsoft.Compute/virtualMachines/extensions",
+			"name": "[concat(variables('vmNamePrefix'),'0/s2dConfig')]",
+			"apiVersion": "[variables('apiVersionVMExtensions')]",
+			"location": "[resourceGroup().location]",
+			"dependsOn": [
 				"[resourceId('Microsoft.Compute/virtualMachines',concat(variables('vmNamePrefix'),'0'))]",
 				"[resourceId('Microsoft.Compute/virtualMachines/extensions',concat(variables('vmNamePrefix'),string(sub(variables('vmCount'),1))),'s2dPrep')]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.Powershell",
-        "type": "DSC",
-        "typeHandlerVersion": "2.20",
-		    "autoUpgradeMinorVersion": false,
-        "settings": {
-		  		"modulesUrl": "[variables('s2dConfigModulesURL')]",
-          "configurationFunction": "[variables('s2dConfigFunction')]",
-          "properties": {
-            "domainName": "[parameters('domainName')]",
+			],
+			"properties": {
+				"publisher": "Microsoft.Powershell",
+				"type": "DSC",
+				"typeHandlerVersion": "2.20",
+				"autoUpgradeMinorVersion": false,
+				"settings": {
+					"modulesUrl": "[variables('s2dConfigModulesURL')]",
+					"configurationFunction": "[variables('s2dConfigFunction')]",
+					"properties": {
+						"domainName": "[parameters('domainName')]",
 						"clusterName": "[variables('clusterName')]",
 						"sofsName": "[variables('sofsName')]",
 						"shareName": "[variables('shareName')]",
 						"vmNamePrefix": "[variables('vmNamePrefix')]",
 						"vmCount": "[variables('vmCount')]",
 						"vmDiskSize": "[variables('vmDiskSize')]",
-            "adminCreds": {
-              "userName": "[parameters('adminUserName')]",
-              "password": "PrivateSettingsRef:adminPassword"
-            }
-          }
-        },
-        "protectedSettings": {
-          "items": {
-            "adminPassword": "[parameters('adminPassword')]"
-          }
-        }
-      }
-    }
-
-  ],
-
-  "outputs": {
-  }
-
+						"adminCreds": {
+							"userName": "[parameters('adminUserName')]",
+							"password": "PrivateSettingsRef:adminPassword"
+						}
+					}
+				},
+				"protectedSettings": {
+					"items": {
+						"adminPassword": "[parameters('adminPassword')]"
+					}
+				}
+			}
+		}
+	],
+	"outputs": {}
 }

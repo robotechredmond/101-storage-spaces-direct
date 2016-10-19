@@ -2,43 +2,33 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-
     "namePrefix": {
       "type": "string"
     },
-
     "domainName": {
       "type": "string"
     },
-
     "subnetUri": {
       "type": "string"
     },
-    
     "adIpAddress": {
       "type": "string"
     },
-
     "storageAccountType": {
       "type": "string"
     },
-
     "vmSize": {
       "type": "string"
     },
-
     "adminUsername": {
       "type": "string"
     },
-
     "adminPassword": {
       "type": "securestring"
     },
-
     "assetLocation": {
       "type": "string"
     },
-
     "windowsImagePublisher": {
       "type": "string",
       "defaultValue": "MicrosoftWindowsServer"
@@ -51,45 +41,33 @@
       "type": "string",
       "defaultValue": "2012-R2-Datacenter"
     },
-
     "windowsImageVersion": {
       "type": "string",
       "defaultValue": "latest"
     }
-
   },
-
   "variables": {
-
     "apiVersion": "2015-01-01",
     "apiVersionNetworks": "2015-06-15",
     "apiVersionVirtualMachines": "2015-06-15",
     "apiVersionVMExtensions": "2015-06-15",
     "apiVersionStorage": "2015-06-15",
-
     "vmDiskSize": 128,
-
     "adNamePrefix": "[concat(parameters('namePrefix'),'-ad-')]",
     "adVMName": "[concat(variables('adNamePrefix'),'1')]",
     "adNicName": "[concat(variables('adVMName'),'-nic')]",
     "adAvailabilitySetName": "[concat(variables('adNamePrefix'),'as')]",
-
     "adStorageAccountName": "[concat(parameters('namePrefix'),'adstor')]",
     "vmContainerName": "vhds",
-
     "adBDCModulesURL": "[concat(parameters('assetLocation'),'/scripts/create-ad-bdc.ps1.zip')]",
     "adBDCConfigurationFunction": "CreateADBDC.ps1\\CreateADBDC"
-
   },
-
   "resources": [
-
-  {
+    {
       "name": "[variables('adNicName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[resourceGroup().location]",
-      "dependsOn": [
-      ],
+      "dependsOn": [],
       "apiVersion": "[variables('apiVersionNetworks')]",
       "properties": {
         "ipConfigurations": [
@@ -106,11 +84,10 @@
         ]
       }
     },
-
     {
       "name": "[variables('adVMName')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "[variables('apiVersionVirtualMachines')]",      
+      "apiVersion": "[variables('apiVersionVirtualMachines')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkInterfaces',variables('adNicName'))]"
@@ -164,7 +141,6 @@
         }
       }
     },
-
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('adVMName'),'/InstallDomainController')]",
@@ -177,7 +153,7 @@
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
         "typeHandlerVersion": "2.17",
-		    "autoUpgradeMinorVersion": false,
+        "autoUpgradeMinorVersion": false,
         "settings": {
           "wmfVersion": "5.0",
           "modulesUrl": "[variables('adBDCModulesURL')]",
@@ -198,13 +174,10 @@
       }
     }
   ],
-
   "outputs": {
-
     "adVMName": {
       "value": "[variables('adVMName')]",
       "type": "string"
     }
-    
   }
 }

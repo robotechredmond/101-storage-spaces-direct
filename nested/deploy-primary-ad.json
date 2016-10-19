@@ -1,45 +1,34 @@
 ﻿{
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-
   "parameters": {
-
     "namePrefix": {
       "type": "string"
     },
-
     "domainName": {
       "type": "string"
     },
-
     "subnetUri": {
       "type": "string"
     },
-    
     "adIpAddress": {
       "type": "string"
     },
-
     "storageAccountType": {
       "type": "string"
     },
-
     "vmSize": {
       "type": "string"
     },
-
     "adminUsername": {
       "type": "string"
     },
-
     "adminPassword": {
       "type": "securestring"
     },
-
     "assetLocation": {
       "type": "string"
     },
-
     "windowsImagePublisher": {
       "type": "string",
       "defaultValue": "MicrosoftWindowsServer"
@@ -52,30 +41,23 @@
       "type": "string",
       "defaultValue": "2012-R2-Datacenter"
     },
-
     "windowsImageVersion": {
       "type": "string",
       "defaultValue": "latest"
     }
-
   },
-
   "variables": {
-
     "apiVersion": "2015-01-01",
     "apiVersionNetworks": "2015-06-15",
     "apiVersionVirtualMachines": "2015-06-15",
     "apiVersionVMExtensions": "2015-06-15",
     "apiVersionStorage": "2015-06-15",
-
     "vmDiskSize": 128,
-
     "adNamePrefix": "[concat(parameters('namePrefix'),'-ad-')]",
     "adVMName": "[concat(variables('adNamePrefix'),'0')]",
     "adNicName": "[concat(variables('adVMName'),'-nic')]",
     "adAvailabilitySetName": "[concat(variables('adNamePrefix'),'as')]",
     "adDnsPrefix": "[concat(parameters('namePrefix'),'ad')]",
-
     "adLBName": "[concat(variables('adNamePrefix'),'elb')]",
     "adPublicIPName": "[concat(variables('adNamePrefix'),'ip')]",
     "lbFE": "[concat(variables('adNamePrefix'),'elbfe')]",
@@ -86,17 +68,12 @@
     "rdpPort": 3389,
     "adLBBEAddressPoolID": "[concat(variables('adLBID'),'/backendAddressPools/',variables('lbBE'))]",
     "adRDPNATRuleID": "[concat(variables('adLBID'),'/inboundNatRules/',variables('rpdNAT'))]",
-
     "adStorageAccountName": "[concat(parameters('namePrefix'),'adstor')]",
     "vmContainerName": "vhds",
-
     "adPDCModulesURL": "[concat(parameters('assetLocation'),'/scripts/create-ad-pdc.ps1.zip')]",
     "adPDCConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC"
-
   },
-
   "resources": [
-
     {
       "type": "Microsoft.Storage/storageAccounts",
       "name": "[variables('adStorageAccountName')]",
@@ -106,7 +83,6 @@
         "accountType": "[parameters('storageAccountType')]"
       }
     },
-
     {
       "apiVersion": "[variables('apiVersionNetworks')]",
       "type": "Microsoft.Network/publicIPAddresses",
@@ -119,15 +95,13 @@
         }
       }
     },
-
     {
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('adAvailabilitySetName')]",
       "apiVersion": "[variables('apiVersionNetworks')]",
       "location": "[resourceGroup().location]"
     },
-
-        {
+    {
       "apiVersion": "[variables('apiVersionNetworks')]",
       "name": "[variables('adLBName')]",
       "type": "Microsoft.Network/loadBalancers",
@@ -167,7 +141,6 @@
         ]
       }
     },
-
     {
       "name": "[variables('adNicName')]",
       "type": "Microsoft.Network/networkInterfaces",
@@ -201,11 +174,10 @@
         ]
       }
     },
-
     {
       "name": "[variables('adVMName')]",
       "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "[variables('apiVersionVirtualMachines')]",      
+      "apiVersion": "[variables('apiVersionVirtualMachines')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts',variables('adStorageAccountName'))]",
@@ -262,7 +234,6 @@
         }
       }
     },
-
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[concat(variables('adVMName'),'/InstallDomainController')]",
@@ -275,7 +246,7 @@
         "publisher": "Microsoft.Powershell",
         "type": "DSC",
         "typeHandlerVersion": "2.17",
-		    "autoUpgradeMinorVersion": false,
+        "autoUpgradeMinorVersion": false,
         "settings": {
           "wmfVersion": "5.0",
           "modulesUrl": "[variables('adPDCModulesURL')]",
@@ -296,13 +267,10 @@
       }
     }
   ],
-
   "outputs": {
-
     "adVMName": {
       "value": "[variables('adVMName')]",
       "type": "string"
     }
-
   }
 }
