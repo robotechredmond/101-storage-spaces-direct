@@ -283,5 +283,14 @@
 			}
 		}
 	],
-	"outputs": {}
+	"outputs": {
+		"sofsName": {
+			"type": "string",
+			"value": "[variables('sofsName')]"
+		},
+		"shareName": {
+			"type": "string",
+			"value": "[variables('shareName')]"
+		}
+	}
 }
