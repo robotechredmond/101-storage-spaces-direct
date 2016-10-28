@@ -27,6 +27,12 @@ configuration ConfigS2D
         [Parameter(Mandatory)]
         [Int]$vmDiskSize,
 
+        [Parameter(Mandatory)]
+        [String]$witnessStorageName,
+
+        [Parameter(Mandatory)]
+        [String]$witnessStorageKey,
+
         [String]$DomainNetbiosName=(Get-NetBIOSName -DomainName $DomainName),
 
         [Int]$RetryCount=20,
@@ -103,12 +109,20 @@ configuration ConfigS2D
 	        DependsOn = "[xComputer]DomainJoin"
         }
 
+        Script CloudWitness
+        {
+            SetScript = "Set-ClusterQuorum -CloudWitness -AccountName $WitnessStorageName -AccessKey $witnessStorageKey"
+            TestScript = "(Get-ClusterQuorum).QuorumResource -eq 'Cloud Witness'"
+            GetScript = "@{Ensure = if ((Get-ClusterQuorum).QuorumResource -eq 'Cloud Witness') {'Present'} else {'Absent'}}"
+            DependsOn = "[xCluster]FailoverCluster"
+        }
+
         Script IncreaseClusterTimeouts
         {
             SetScript = "(Get-Cluster).SameSubnetDelay = 2000; (Get-Cluster).SameSubnetThreshold = 15; (Get-Cluster).CrossSubnetDelay = 3000; (Get-Cluster).CrossSubnetThreshold = 15"
             TestScript = "(Get-Cluster).SameSubnetDelay -eq 2000 -and (Get-Cluster).SameSubnetThreshold -eq 15 -and (Get-Cluster).CrossSubnetDelay -eq 3000 -and (Get-Cluster).CrossSubnetThreshold -eq 15"
             GetScript = "@{Ensure = if ((Get-Cluster).SameSubnetDelay -eq 2000 -and (Get-Cluster).SameSubnetThreshold -eq 15 -and (Get-Cluster).CrossSubnetDelay -eq 3000 -and (Get-Cluster).CrossSubnetThreshold -eq 15) {'Present'} else {'Absent'}}"
-            DependsOn = "[xCluster]FailoverCluster"
+            DependsOn = "[Script]CloudWitness"
         }
 
         Script EnableS2D

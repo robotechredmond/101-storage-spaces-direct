@@ -1,0 +1,157 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+
+        "vmName": {
+            "type": "string"
+        },
+        "storageAccountUri": {
+            "type": "string"
+        },
+        "vmAvailabilitySetName": {
+            "type": "string"
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_DS1_v2"
+        },
+        "vmDiskCount": {
+            "type": "int",
+            "defaultValue": 2
+        },
+        "vmDiskSize": {
+            "type": "int",
+            "defaultValue": 1023
+        },
+        "vhdContainerName": {
+            "type": "string"
+        },
+        "domainName": {
+            "type": "string"
+        },
+        "adminUsername": {
+            "type": "string"
+        },
+        "adminPassword": {
+            "type": "securestring"
+        },
+        "imagePublisher": {
+			"type": "string",
+			"defaultValue": "MicrosoftWindowsServer"
+		},
+		"imageOffer": {
+			"type": "string",
+			"defaultValue": "WindowsServer"
+		},
+		"imageSKU": {
+			"type": "string",
+			"defaultValue": "2016-Datacenter"
+		},
+		"imageVersion": {
+			"type": "string",
+			"defaultValue": "latest"
+		},
+		"_artifactsLocation": {
+			"type": "string"
+		},
+		"_artifactsLocationSasToken": {
+			"type": "string"
+		}
+    },
+    "variables": {
+        "apiVersion": "2015-01-01",
+		"apiVersionNetworks": "2015-06-15",
+		"apiVersionVirtualMachines": "2015-06-15",
+		"apiVersionVMExtensions": "2015-06-15",
+		"apiVersionStorage": "2015-06-15",
+        "diskSelectionTemplateUri": "[concat(parameters('_artifactsLocation'),'/nested/diskSelection.json',parameters('_artifactsLocationSasToken'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+            "name": "[concat(parameters('vmName'),'-diskSelection')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('diskSelectionTemplateUri')]"
+                },
+                "parameters": {
+                    "vmDiskCount": {
+                        "value": "[parameters('vmDiskCount')]"
+                    },
+                    "vmDiskSize": {
+                        "value": "[parameters('vmDiskSize')]"
+                    },
+                    "diskCaching": {
+                        "value": "None"
+                    },
+                    "storageAccountUri": {
+                        "value": "[parameters('storageAccountUri')]"
+                    },
+                    "vhdContainerName": {
+                        "value": "[parameters('vhdContainerName')]"
+                    },
+                    "diskNamingPrefix": {
+                        "value": "[concat(parameters('vmName'), '-data')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "[variables('apiVersionVirtualMachines')]",
+            "location": "[resourceGroup().location]",
+            "name": "[parameters('vmName')]",
+            "dependsOn": [
+                "[concat('Microsoft.Resources/deployments/',parameters('vmName'),'-diskSelection')]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "availabilitySet": {
+                    "id": "[resourceId('Microsoft.Compute/availabilitySets/', parameters('vmAvailabilitySetName'))]"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('vmName')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[parameters('imagePublisher')]",
+                        "offer": "[parameters('imageOffer')]",
+                        "sku": "[parameters('imageSku')]",
+                        "version": "[parameters('imageVersion')]"
+                    },
+                    "osDisk": {
+                        "name": "osdisk",
+                        "vhd": {
+                            "uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('vmName'),'-osdisk.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    },
+                    "dataDisks": "[reference(concat(parameters('vmName'),'-diskSelection')).outputs.dataDiskArray.value]"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('vmName'),'-nic')]"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "vmName": {
+            "type": "string",
+            "value": "[parameters('vmName')]"
+        }
+    }
+}
+
+
