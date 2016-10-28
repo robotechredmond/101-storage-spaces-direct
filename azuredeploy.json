@@ -132,7 +132,7 @@
     "apiVersionVMExtensions": "2015-06-15",
     "apiVersionStorage": "2015-06-15",
     "subnetRef": "[concat(parameters('existingVirtualNetworkId'),'/subnets/',parameters('existingSubnetName'))]",
-    "deployS2DClusterTemplateURL": "[concat(parameters('_artifactsLocation'),'/nested/deploy-s2d-cluster.json')]",
+    "deployS2DClusterTemplateURL": "[concat(parameters('_artifactsLocation'),'/nested/deploy-s2d-cluster.json',parameters('_artifactsLocationSasToken'))]",
     "deployS2DCluster": "deployS2DCluster",
     "deployS2DClusterId": "[concat('Microsoft.Resources/deployments/', variables('deployS2DCluster'))]"
   },
