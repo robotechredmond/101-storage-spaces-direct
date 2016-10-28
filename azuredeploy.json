@@ -50,10 +50,8 @@
     },
     "vmCount": {
 			"type": "int",
-      "allowedValues": [
-        2,
-        3
-      ],
+      "minValue": 2,
+      "maxValue": 3,
       "metadata": {
         "description": "Number of S2D VMs to be created in cluster"
       },
