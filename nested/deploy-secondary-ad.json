@@ -59,7 +59,7 @@
     "adAvailabilitySetName": "[concat(variables('adNamePrefix'),'as')]",
     "adStorageAccountName": "[concat(parameters('namePrefix'),'adstor')]",
     "vmContainerName": "vhds",
-    "adBDCModulesURL": "[concat(parameters('assetLocation'),'/scripts/create-ad-bdc.ps1.zip')]",
+    "adBDCModulesURL": "[concat(parameters('assetLocation'),'/dsc/create-ad-bdc.ps1.zip')]",
     "adBDCConfigurationFunction": "CreateADBDC.ps1\\CreateADBDC"
   },
   "resources": [

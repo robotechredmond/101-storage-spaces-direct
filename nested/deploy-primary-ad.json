@@ -70,7 +70,7 @@
     "adRDPNATRuleID": "[concat(variables('adLBID'),'/inboundNatRules/',variables('rpdNAT'))]",
     "adStorageAccountName": "[concat(parameters('namePrefix'),'adstor')]",
     "vmContainerName": "vhds",
-    "adPDCModulesURL": "[concat(parameters('assetLocation'),'/scripts/create-ad-pdc.ps1.zip')]",
+    "adPDCModulesURL": "[concat(parameters('assetLocation'),'/dsc/create-ad-pdc.ps1.zip')]",
     "adPDCConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC"
   },
   "resources": [

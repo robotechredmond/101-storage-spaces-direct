@@ -74,9 +74,9 @@
 		"shareName": "data",
 		"vhdContainerName": "vhds",
 		"vmLoopTemplateURL": "[concat(parameters('_artifactsLocation'),'/nested/newVM.json',parameters('_artifactsLocationSasToken'))]",
-		"s2dPrepModulesURL": "[concat(parameters('_artifactsLocation'),'/scripts/prep-s2d.ps1.zip',parameters('_artifactsLocationSasToken'))]",
+		"s2dPrepModulesURL": "[concat(parameters('_artifactsLocation'),'/dsc/prep-s2d.ps1.zip',parameters('_artifactsLocationSasToken'))]",
 		"s2dPrepFunction": "PrepS2D.ps1\\PrepS2D",
-		"s2dConfigModulesURL": "[concat(parameters('_artifactsLocation'),'/scripts/config-s2d.ps1.zip',parameters('_artifactsLocationSasToken'))]",
+		"s2dConfigModulesURL": "[concat(parameters('_artifactsLocation'),'/dsc/config-s2d.ps1.zip',parameters('_artifactsLocationSasToken'))]",
 		"s2dConfigFunction": "ConfigS2D.ps1\\ConfigS2D"
 	},
 	"resources": [
@@ -264,7 +264,10 @@
 						"vmCount": "[parameters('vmCount')]",
 						"vmDiskSize": "[parameters('vmDiskSize')]",
 						"witnessStorageName": "[variables('witnessStorageName')]",
-						"witnessStorageKey": "PrivateSettingsRef:witnessStorageKey",
+						"witnessStorageKey": {
+							"userName": "PLACEHOLDER-DO-NOT-USE",
+							"password": "PrivateSettingsRef:witnessStorageKey"
+						},
 						"adminCreds": {
 							"userName": "[parameters('adminUserName')]",
 							"password": "PrivateSettingsRef:adminPassword"
