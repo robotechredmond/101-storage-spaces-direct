@@ -57,7 +57,7 @@
       "metadata": {
         "description": "Number of S2D VMs to be created in cluster"
       },
-			"defaultValue": 3
+			"defaultValue": 2
 		},
 		"vmDiskSize": {
 			"type": "int",

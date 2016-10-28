@@ -89,7 +89,7 @@
 		},
 		{
 			"type": "Microsoft.Storage/storageAccounts",
-			"name": "[concat(variables('witnessStorageName')]",
+			"name": "[variables('witnessStorageName')]",
 			"apiVersion": "[variables('apiVersionStorage')]",
 			"location": "[resourceGroup().location]",
 			"properties": {
