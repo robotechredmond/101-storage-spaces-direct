@@ -5,7 +5,7 @@
         "vmDiskCount": {
             "type": "int",
             "minValue": 2,
-            "maxValue": 16,
+            "maxValue": 32,
             "defaultValue": 2
         },
         "vmDiskSize": {
@@ -187,13 +187,173 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk15')]",
-                "caching": "None",
-                "createOption": "Empty",
                 "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 15,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk15.vhd')]"
-                }
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk16')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 16,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk16.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk17')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 17,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk17.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk18')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 18,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk18.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk19')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 19,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk19.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk20')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 20,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk20.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk21')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 21,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk21.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk22')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 22,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk22.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk23')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 23,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk23.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk24')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 24,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk24.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk25')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 25,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk25.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk26')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 26,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk26.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk27')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 27,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk27.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk28')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 28,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk28.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk29')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 29,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk29.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk30')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 30,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk30.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
+            },
+            {
+                "name": "[concat(parameters('diskNamingPrefix'), 'disk31')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
+                "lun": 31,
+                "vhd": {
+                    "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk31.vhd')]"
+                },
+                "caching": "None",
+                "createOption": "Empty"
             }
         ]
     },

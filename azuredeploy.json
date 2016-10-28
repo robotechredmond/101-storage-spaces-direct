@@ -71,7 +71,7 @@
     "vmDiskCount": {
 			"type": "int",
       "minValue": 2,
-      "maxValue": 16,
+      "maxValue": 32,
       "metadata": {
         "description": "Number of data disks on each S2D VM"
       },      
