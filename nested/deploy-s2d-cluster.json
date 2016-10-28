@@ -274,7 +274,7 @@
 				"protectedSettings": {
 					"items": {
 						"adminPassword": "[parameters('adminPassword')]",
-						"witnessStorageKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts',variables('witnessStorageName')),variables('apiVersionStorage')).keys[0].value]"
+						"witnessStorageKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts',variables('witnessStorageName')),variables('apiVersionStorage')).key1]"
 					}
 				}
 			}
