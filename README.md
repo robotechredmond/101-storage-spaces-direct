@@ -23,6 +23,8 @@ To deploy the required Azure VNET and Active Directory infrastructure, if not al
 
 + To deploy the required Azure VNET and Active Directory infrastructure, if not already in place, you may use the *DeployADOnly.json* template that is also located in this project.
 
++ SPECIAL THANKS to <a href="https://github.com/mmarch">@mmarch</a> on code contributions for variable disk selection nested templates!
+
 Click the button below to deploy from the portal
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Frobotechredmond%2F101-storage-spaces-direct%2Fmaster%2Fazuredeploy.json" target="_blank">
