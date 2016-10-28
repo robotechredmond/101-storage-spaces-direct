@@ -37,7 +37,7 @@
         "diskArray": [
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk0')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB":"[parameters('vmDiskSize')]",
                 "lun": 0,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk0.vhd')]"
@@ -47,7 +47,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk1')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 1,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk1.vhd')]"
@@ -57,7 +57,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk2')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 2,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk2.vhd')]"
@@ -67,7 +67,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk3')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 3,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk3.vhd')]"
@@ -77,7 +77,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk4')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 4,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk4.vhd')]"
@@ -87,7 +87,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk5')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 5,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk5.vhd')]"
@@ -97,7 +97,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk6')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 6,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk6.vhd')]"
@@ -107,7 +107,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk7')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 7,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk7.vhd')]"
@@ -117,7 +117,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk8')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 8,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk8.vhd')]"
@@ -127,7 +127,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk9')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 9,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk9.vhd')]"
@@ -137,7 +137,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk10')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 10,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk10.vhd')]"
@@ -147,7 +147,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk11')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 11,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk11.vhd')]"
@@ -157,7 +157,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk12')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 12,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk12.vhd')]"
@@ -167,7 +167,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk13')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 13,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk13.vhd')]"
@@ -177,7 +177,7 @@
             },
             {
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk14')]",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 14,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk14.vhd')]"
@@ -189,7 +189,7 @@
                 "name": "[concat(parameters('diskNamingPrefix'), 'disk15')]",
                 "caching": "None",
                 "createOption": "Empty",
-                "vmDiskSize": "[parameters('vmDiskSize')]",
+                "diskSizeGB": "[parameters('vmDiskSize')]",
                 "lun": 15,
                 "vhd": {
                     "Uri": "[concat(parameters('storageAccountUri'), parameters('vhdContainerName'),'/',parameters('diskNamingPrefix'),'disk15.vhd')]"
