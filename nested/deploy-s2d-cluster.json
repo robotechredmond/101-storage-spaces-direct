@@ -65,7 +65,7 @@
 		"apiVersionVMExtensions": "2015-06-15",
 		"apiVersionStorage": "2015-06-15",
 		"storageNamePrefix": "[concat(parameters('namePrefix'),uniqueString(resourceGroup().id),'vm')]",
-		"witnessStorageName": "[concat(parameters('namePrefix'),uniqueString(resourceGroup().id),'witness')]",
+		"witnessStorageName": "[concat(parameters('namePrefix'),uniqueString(resourceGroup().id),'cw')]",
 		"witnessStorageType": "Standard_LRS",
 		"vmNamePrefix": "[concat(parameters('namePrefix'),'-s2d-')]",
 		"vmAvailabilitySetName": "[concat(variables('vmNamePrefix'),'as')]",
