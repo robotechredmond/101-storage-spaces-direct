@@ -3,37 +3,99 @@
 	"contentVersion": "1.0.0.0",
 	"parameters": {
 		"namePrefix": {
-			"type": "string"
+			"type": "string",
+			"minLength": 3,
+			"maxLength": 8,
+			"metadata": {
+				"description": "Naming prefix for each new resource created. 3-char min, 8-char max, lowercase alphanumeric"
+			}			
 		},
 		"domainName": {
-			"type": "string"
+			"type": "string",
+			"metadata": {
+				"description": "DNS domain name for existing Active Directory domain"
+			},
+			"defaultValue": "contoso.com"
 		},
 		"adminUsername": {
-			"type": "string"
+			"type": "string",
+			"metadata": {
+				"description": "Name of the Administrator of the existing Active Directory Domain"
+			}
 		},
 		"adminPassword": {
-			"type": "securestring"
+			"type": "securestring",
+			"minLength": 12,
+			"metadata": {
+				"description": "Password for the Administrator account of the existing Active Directory Domain"
+			}
 		},
 		"storageAccountType": {
-			"type": "securestring"
+			"type": "string",
+			"allowedValues": [
+				"Standard_LRS",
+				"Standard_GRS",
+				"Standard_RAGRS",
+				"Premium_LRS"
+			],
+			"metadata": {
+				"description": "Type of new Storage Accounts (Standard_LRS, Standard_GRS, Standard_RAGRS or Premium_LRS) to be created to store VM disks"
+			},
+			"defaultValue": "Premium_LRS"
 		},
 		"nicSubnetUri": {
-			"type": "string"
+			"type": "string",
+			"metadata": {
+				"description": "Resource ID for existing vnet/subnet to which VM NICs should be attached"
+			},
 		},
 		"vmSize": {
-			"type": "string"
+			"type": "string",
+			"metadata": {
+				"description": "Size of the S2D VMs to be created"
+			},
+			"defaultValue": "Standard_DS1_v2"
 		},
 		"vmCount": {
 			"type": "int",
-			"defaultValue": 3
+			"minValue": 2,
+			"maxValue": 3,
+			"metadata": {
+				"description": "Number of S2D VMs to be created in cluster (Min=2, Max=3)"
+			},
+			"defaultValue": 2
 		},
 		"vmDiskSize": {
 			"type": "int",
+			"minValue": 128,
+			"maxValue": 1023,
+			"metadata": {
+				"description": "Size of each data disk in GB on each S2D VM (Min=128, Max=1023)"
+			},      
 			"defaultValue": 1023
 		},
 		"vmDiskCount": {
 			"type": "int",
+			"minValue": 2,
+			"maxValue": 32,
+			"metadata": {
+				"description": "Number of data disks on each S2D VM (Min=2, Max=32). Ensure that the VM size you've selected will support this number of data disks."
+			},      
 			"defaultValue": 2
+		},
+		"sofsName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of clustered Scale-Out File Server role"
+			},
+			"defaultValue": "fs01"
+		},
+		"shareName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of shared data folder on clustered Scale-Out File Server role"
+			},
+			"defaultValue": "data"    
 		},
 		"imagePublisher": {
 			"type": "string",
@@ -70,8 +132,6 @@
 		"vmNamePrefix": "[concat(parameters('namePrefix'),'-s2d-')]",
 		"vmAvailabilitySetName": "[concat(variables('vmNamePrefix'),'as')]",
 		"clusterName": "[concat(variables('vmNamePrefix'),'c')]",
-		"sofsName": "[concat(variables('vmNamePrefix'),'fs')]",
-		"shareName": "data",
 		"vhdContainerName": "vhds",
 		"vmLoopTemplateURL": "[concat(parameters('_artifactsLocation'),'/nested/newVM.json',parameters('_artifactsLocationSasToken'))]",
 		"s2dPrepModulesURL": "[concat(parameters('_artifactsLocation'),'/dsc/prep-s2d.ps1.zip',parameters('_artifactsLocationSasToken'))]",
@@ -258,8 +318,8 @@
 					"properties": {
 						"domainName": "[parameters('domainName')]",
 						"clusterName": "[variables('clusterName')]",
-						"sofsName": "[variables('sofsName')]",
-						"shareName": "[variables('shareName')]",
+						"sofsName": "[parameters('sofsName')]",
+						"shareName": "[parameters('shareName')]",
 						"vmNamePrefix": "[variables('vmNamePrefix')]",
 						"vmCount": "[parameters('vmCount')]",
 						"vmDiskSize": "[parameters('vmDiskSize')]",
@@ -286,11 +346,11 @@
 	"outputs": {
 		"sofsName": {
 			"type": "string",
-			"value": "[variables('sofsName')]"
+			"value": "[parameters('sofsName')]"
 		},
 		"shareName": {
 			"type": "string",
-			"value": "[variables('shareName')]"
+			"value": "[parameters('shareName')]"
 		}
 	}
 }

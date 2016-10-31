@@ -14,9 +14,12 @@
     "adminPassword": {
       "value": "GEN-PASSWORD"
     },
-    "existingVirtualNetworkId": {
-      "value": "/subscriptions/..."
+    "existingVirtualNetworkName": {
+      "value": "vnet01"
     },
+    "existingVirtualNetworkRGName": {
+      "value": "rg01"
+    },    
     "existingSubnetName": {
       "value": "default"
     }

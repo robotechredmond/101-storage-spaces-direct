@@ -7,7 +7,7 @@
       "minLength": 3,
       "maxLength": 8,
       "metadata": {
-        "description": "Naming prefix for each new resource created. 8-char max, lowercase alphanumeric"
+        "description": "Naming prefix for each new resource created. 3-char min, 8-char max, lowercase alphanumeric"
       }
     },
     "storageAccountType": {
@@ -25,26 +25,6 @@
     },
     "vmSize": {
       "type": "string",
-      "allowedValues": [
-        "Standard_D1_v2",
-        "Standard_DS1_v2",
-        "Standard_D2_v2",
-        "Standard_DS2_v2",
-        "Standard_D3_v2",
-        "Standard_DS3_v2",
-        "Standard_D4_v2",
-        "Standard_DS4_v2",
-        "Standard_D11_v2",
-        "Standard_DS11_v2",
-        "Standard_D12_v2",
-        "Standard_DS12_v2",
-        "Standard_D13_v2",
-        "Standard_DS13_v2",
-        "Standard_D14_v2",
-        "Standard_DS14_v2",
-        "Standard_D15_v2",
-        "Standard_DS15_v2"
-      ],
       "metadata": {
         "description": "Size of the S2D VMs to be created"
       },
@@ -55,7 +35,7 @@
       "minValue": 2,
       "maxValue": 3,
       "metadata": {
-        "description": "Number of S2D VMs to be created in cluster"
+        "description": "Number of S2D VMs to be created in cluster (Min=2, Max=3)"
       },
 			"defaultValue": 2
 		},
@@ -64,7 +44,7 @@
       "minValue": 128,
       "maxValue": 1023,
       "metadata": {
-        "description": "Size of each data disk in GB on each S2D VM"
+        "description": "Size of each data disk in GB on each S2D VM (Min=128, Max=1023)"
       },      
 			"defaultValue": 1023
 		},
@@ -73,7 +53,7 @@
       "minValue": 2,
       "maxValue": 32,
       "metadata": {
-        "description": "Number of data disks on each S2D VM"
+        "description": "Number of data disks on each S2D VM (Min=2, Max=32). Ensure that the VM size you've selected will support this number of data disks."
       },      
 			"defaultValue": 2
 		},
@@ -97,11 +77,31 @@
         "description": "Password for the Administrator account of the existing Active Directory Domain"
       }
     },
-    "existingVirtualNetworkId": {
+    "existingVirtualNetworkName": {
       "type": "string",
       "metadata": {
-        "description": "Resource ID of the existing VNET. You can find the Resource ID for the VNET on the Properties blade of the VNET."
+        "description": "Name of the existing VNET."
       }
+    },
+    "existingVirtualNetworkRGName": {
+      "type": "string",
+      "metadata": {
+        "description": "Resource Group Name for the existing VNET."
+      }
+    },
+    "sofsName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of clustered Scale-Out File Server role"
+      },
+      "defaultValue": "fs01"
+    },
+    "shareName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of shared data folder on clustered Scale-Out File Server role"
+      },
+      "defaultValue": "data"    
     },
     "existingSubnetName": {
       "type": "string",
@@ -131,7 +131,8 @@
     "apiVersionVirtualMachines": "2015-06-15",
     "apiVersionVMExtensions": "2015-06-15",
     "apiVersionStorage": "2015-06-15",
-    "subnetRef": "[concat(parameters('existingVirtualNetworkId'),'/subnets/',parameters('existingSubnetName'))]",
+    "existingVirtualNetworkId": "[resourceId(parameters('existingVirtualNetworkRGName'),'Microsoft.Network/virtualNetworks',parameters('existingVirtualNetworkName'))]",
+    "subnetRef": "[concat(variables('existingVirtualNetworkId'),'/subnets/',parameters('existingSubnetName'))]",
     "deployS2DClusterTemplateURL": "[concat(parameters('_artifactsLocation'),'/nested/deploy-s2d-cluster.json',parameters('_artifactsLocationSasToken'))]",
     "deployS2DCluster": "deployS2DCluster",
     "deployS2DClusterId": "[concat('Microsoft.Resources/deployments/', variables('deployS2DCluster'))]"
@@ -179,6 +180,12 @@
           "vmDiskCount": {
             "value": "[parameters('vmDiskCount')]"
           },
+          "sofsName": {
+            "value": "[parameters('sofsName')]"
+          },
+          "shareName": {
+            "value": "[parameters('shareName')]"
+          },
           "_artifactsLocation": {
             "value": "[parameters('_artifactsLocation')]"
           },
@@ -189,5 +196,10 @@
       }
     }
   ],
-  "outputs": {}
+  "outputs": {
+    "sofsPath": {
+      "type": "string",
+      "value": "[concat('\\\\',reference(variables('deployS2DCluster')).outputs.sofsName.value,'\\',reference(variables('deployS2DCluster')).outputs.shareName.value)]"
+    }
+  }
 }
