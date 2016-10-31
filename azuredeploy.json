@@ -77,17 +77,19 @@
         "description": "Password for the Administrator account of the existing Active Directory Domain"
       }
     },
-    "existingVirtualNetworkName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the existing VNET."
-      }
-    },
     "existingVirtualNetworkRGName": {
       "type": "string",
       "metadata": {
         "description": "Resource Group Name for the existing VNET."
-      }
+      },
+      "defaultValue": "vnet01"
+    },
+    "existingVirtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the existing VNET."
+      },
+      "defaultValue": "rg01"
     },
     "existingSubnetName": {
       "type": "string",
