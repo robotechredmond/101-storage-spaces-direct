@@ -89,6 +89,13 @@
         "description": "Resource Group Name for the existing VNET."
       }
     },
+    "existingSubnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the existing subnet in the existing VNET to which the S2D VMs should be deployed"
+      },
+      "defaultValue": "default"
+    },
     "sofsName": {
       "type": "string",
       "metadata": {
@@ -102,13 +109,6 @@
         "description": "Name of shared data folder on clustered Scale-Out File Server role"
       },
       "defaultValue": "data"    
-    },
-    "existingSubnetName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the existing subnet in the existing VNET to which the S2D VMs should be deployed"
-      },
-      "defaultValue": "default"
     },
     "_artifactsLocation": {
       "type": "string",
