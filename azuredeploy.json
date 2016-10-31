@@ -82,14 +82,14 @@
       "metadata": {
         "description": "Resource Group Name for the existing VNET."
       },
-      "defaultValue": "vnet01"
+      "defaultValue": "rg01"
     },
     "existingVirtualNetworkName": {
       "type": "string",
       "metadata": {
         "description": "Name of the existing VNET."
       },
-      "defaultValue": "rg01"
+      "defaultValue": "vnet01"
     },
     "existingSubnetName": {
       "type": "string",
