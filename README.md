@@ -21,7 +21,9 @@ Click the button below to deploy from the portal:
 
 ## Notes
 
-+	The default settings for storage are to deploy using **premium storage**.  
++	The default settings for storage are to deploy using **premium storage**.  When using Premium Storage, be sure to select a VM size (DS-series, GS-series) that supports Premium Storage.
+
++   The default settings deploy 2 data disks per storage node, but can be increased to up to 32 data disks per node.  When increasing # of data disks, be sure to select a VM size that can support the # of data disks you specify.
 
 + 	The default settings for compute require that you have at least 2 cores of free quota to deploy.
 
@@ -30,7 +32,7 @@ Click the button below to deploy from the portal:
 
 +	To successfully deploy this template, be sure that the subnet to which the storage nodes are being deployed already exists on the specified Azure virtual network, AND this subnet should be defined in Active Directory Sites and Services for the appropriate AD site in which the closest domain controllers are configured.
 
-+ SPECIAL THANKS to <a href="https://github.com/mmarch">@mmarch</a> on code contributions for variable disk selection nested templates!
++ SPECIAL THANKS to <a href="https://github.com/mmarch">@mmarch</a> on code contributions for dynamic data disk selection nested templates!
 
 ## Deploying Sample Templates
 
