@@ -128,22 +128,16 @@
     }   
   },
   "variables": {
-    "apiVersion": "2015-01-01",
-    "apiVersionNetworks": "2015-06-15",
-    "apiVersionVirtualMachines": "2015-06-15",
-    "apiVersionVMExtensions": "2015-06-15",
-    "apiVersionStorage": "2015-06-15",
     "existingVirtualNetworkId": "[resourceId(parameters('existingVirtualNetworkRGName'),'Microsoft.Network/virtualNetworks',parameters('existingVirtualNetworkName'))]",
     "subnetRef": "[concat(variables('existingVirtualNetworkId'),'/subnets/',parameters('existingSubnetName'))]",
     "deployS2DClusterTemplateURL": "[concat(parameters('_artifactsLocation'),'/nested/deploy-s2d-cluster.json',parameters('_artifactsLocationSasToken'))]",
-    "deployS2DCluster": "deployS2DCluster",
-    "deployS2DClusterId": "[concat('Microsoft.Resources/deployments/', variables('deployS2DCluster'))]"
+    "deployS2DCluster": "deployS2DCluster"
   },
   "resources": [
     {
       "name": "[variables('deployS2DCluster')]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "[variables('apiVersion')]",
+      "apiVersion": "2015-01-01",
       "dependsOn": [],
       "properties": {
         "mode": "Incremental",

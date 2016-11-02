@@ -121,10 +121,6 @@
 		}
 	},
 	"variables": {
-		"apiVersion": "2015-01-01",
-		"apiVersionNetworks": "2015-06-15",
-		"apiVersionVirtualMachines": "2015-06-15",
-		"apiVersionVMExtensions": "2015-06-15",
 		"apiVersionStorage": "2015-06-15",
 		"storageNamePrefix": "[concat(parameters('namePrefix'),uniqueString(resourceGroup().id),'vm')]",
 		"witnessStorageName": "[concat(parameters('namePrefix'),uniqueString(resourceGroup().id),'cw')]",
@@ -143,14 +139,14 @@
 		{
 			"type": "Microsoft.Compute/availabilitySets",
 			"name": "[variables('vmAvailabilitySetName')]",
-			"apiVersion": "[variables('apiVersionNetworks')]",
+			"apiVersion": "2015-06-15",
 			"location": "[resourceGroup().location]",
 			"properties": {}
 		},
 		{
 			"type": "Microsoft.Storage/storageAccounts",
 			"name": "[variables('witnessStorageName')]",
-			"apiVersion": "[variables('apiVersionStorage')]",
+			"apiVersion": "2015-06-15",
 			"location": "[resourceGroup().location]",
 			"properties": {
 				"accountType": "[variables('witnessStorageType')]"
@@ -159,7 +155,7 @@
 		{
 			"type": "Microsoft.Storage/storageAccounts",
 			"name": "[concat(variables('storageNamePrefix'),copyindex())]",
-			"apiVersion": "[variables('apiVersionStorage')]",
+			"apiVersion": "2015-06-15",
 			"copy": {
 				"name": "storageAccountLoop",
 				"count": "[parameters('vmCount')]"
@@ -173,7 +169,7 @@
 			"name": "[concat(variables('vmNamePrefix'), copyindex(), '-nic')]",
 			"type": "Microsoft.Network/networkInterfaces",
 			"location": "[resourceGroup().location]",
-			"apiVersion": "[variables('apiVersionNetworks')]",
+			"apiVersion": "2015-06-15",
 			"copy": {
 				"name": "nicLoop",
 				"count": "[parameters('vmCount')]"
@@ -194,7 +190,7 @@
 		},
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2015-01-01",
             "copy": {
                 "name": "virtualMachineLoop",
                 "count": "[parameters('vmCount')]"
@@ -232,9 +228,6 @@
 					"vhdContainerName": {
 						"value": "[variables('vhdContainerName')]"
 					},
-                    "domainName": {
-                        "value": "[parameters('domainName')]"
-                    },
                     "adminUsername": {
                         "value": "[parameters('adminUsername')]"
                     },
@@ -265,7 +258,7 @@
 		{
 			"type": "Microsoft.Compute/virtualMachines/extensions",
 			"name": "[concat(variables('vmNamePrefix'),string(add(copyindex(),1)),'/s2dPrep')]",
-			"apiVersion": "[variables('apiVersionVMExtensions')]",
+			"apiVersion": "2015-06-15",
 			"location": "[resourceGroup().location]",
 			"dependsOn": [
 				"virtualMachineLoop"
@@ -278,7 +271,7 @@
 				"publisher": "Microsoft.Powershell",
 				"type": "DSC",
 				"typeHandlerVersion": "2.20",
-				"autoUpgradeMinorVersion": false,
+				"autoUpgradeMinorVersion": true,
 				"settings": {
 					"modulesUrl": "[variables('s2dPrepModulesURL')]",
 					"configurationFunction": "[variables('s2dPrepFunction')]",
@@ -300,7 +293,7 @@
 		{
 			"type": "Microsoft.Compute/virtualMachines/extensions",
 			"name": "[concat(variables('vmNamePrefix'),'0/s2dConfig')]",
-			"apiVersion": "[variables('apiVersionVMExtensions')]",
+			"apiVersion": "2015-06-15",
 			"location": "[resourceGroup().location]",
 			"dependsOn": [
 				"virtualMachineLoop",
@@ -311,7 +304,7 @@
 				"publisher": "Microsoft.Powershell",
 				"type": "DSC",
 				"typeHandlerVersion": "2.20",
-				"autoUpgradeMinorVersion": false,
+				"autoUpgradeMinorVersion": true,
 				"settings": {
 					"modulesUrl": "[variables('s2dConfigModulesURL')]",
 					"configurationFunction": "[variables('s2dConfigFunction')]",
