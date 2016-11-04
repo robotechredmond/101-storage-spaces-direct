@@ -139,9 +139,10 @@
             "name": "[variables('witnessStorageName')]",
             "apiVersion": "2016-01-01",
             "location": "[resourceGroup().location]",
-            "properties": {
-                "accountType": "[variables('witnessStorageType')]"
-            }
+            "sku": {
+                "name": "[variables('witnessStorageType')]"
+            },
+            "kind": "Storage"
         },
         {
             "type": "Microsoft.Storage/storageAccounts",
@@ -152,9 +153,10 @@
                 "count": "[parameters('vmCount')]"
             },
             "location": "[resourceGroup().location]",
-            "properties": {
-                "accountType": "[parameters('storageAccountType')]"
-            }
+            "sku": {
+                "name": "[parameters('storageAccountType')]"
+            },
+            "kind": "Storage"
         },
         {
             "name": "[concat(variables('vmNamePrefix'), copyindex(), '-nic')]",
